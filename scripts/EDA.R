@@ -1,9 +1,47 @@
-#===========================================================#
-# PROYECTO FINAL - ANALISIS EXPLORATORIO DE DATOS           #
-# Base: Multas administrativas activas de Ate               #
-#===========================================================#
+#===============================================================================
+#                         UNIVERSIDAD NACIONAL DEL CENTRO
+#                                  DEL PERÚ
+#
+#                         FACULTAD DE ECONOMÍA
+#
+#                    CURSO: OFIMÁTICA PARA ECONOMISTAS
+#
+#===============================================================================
+#
+#                         PROYECTO FINAL DE RSTUDIO
+#
+#              ANÁLISIS EXPLORATORIO DE DATOS DE LAS MULTAS
+#          ADMINISTRATIVAS ACTIVAS DE LA MUNICIPALIDAD DISTRITAL
+#                              DE ATE
+#
+#===============================================================================
+#
+# Estudiante : Condor Arrieta Jesarely
+# Docente    : Mirko Smith Caja Ventura
+# Archivo    : EDA.R
+# Tema       : Limpieza, preparación y análisis exploratorio de datos
+# Fuente     : Municipalidad Distrital de Ate
+# Año        : 2026
+#
+#===============================================================================
+#
+# Objetivo:
+# Importar, limpiar y analizar la base de datos de multas administrativas
+# activas de la Municipalidad Distrital de Ate, utilizando las herramientas
+# aprendidas en las primeras clases de RStudio.
+#
+#===============================================================================
 
 rm(list = ls())
+
+# Se establece automáticamente la carpeta principal del proyecto.
+if (rstudioapi::isAvailable()) {
+  ruta_script <- rstudioapi::getActiveDocumentContext()$path
+  if (nzchar(ruta_script)) {
+    setwd(dirname(dirname(ruta_script)))
+  }
+}
+
 
 library(readr)
 library(dplyr)
@@ -131,8 +169,8 @@ tabla_giro %>% head(10)
 # Gráfico 1: cantidad de multas por año
 grafico_1 <- tabla_anio %>%
   ggplot(aes(x = anio_multa, y = cantidad)) +
-  geom_line(linewidth = 1) +
-  geom_point(size = 2) +
+  geom_line(linewidth = 1.2, color = "#1565C0") +
+  geom_point(size = 3, color = "#F57C00") +
   scale_x_continuous(breaks = seq(1999, 2024, 2)) +
   labs(
     title = "Multas administrativas activas según año de emisión",
@@ -141,13 +179,23 @@ grafico_1 <- tabla_anio %>%
     y = "Cantidad de registros",
     caption = "Fuente: Plataforma Nacional de Datos Abiertos - Municipalidad Distrital de Ate"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", color = "#1F2937"),
+    plot.subtitle = element_text(color = "#4B5563"),
+    panel.grid.minor = element_blank()
+  )
 
 # Gráfico 2: distribución del monto total
 grafico_2 <- multas_limpias %>%
   filter(total > 0) %>%
   ggplot(aes(x = log10(total))) +
-  geom_histogram(bins = 35) +
+  geom_histogram(
+    bins = 35,
+    fill = "#26A69A",
+    color = "white",
+    alpha = 0.90
+  ) +
   labs(
     title = "Distribución del monto total de las multas activas",
     subtitle = "Se utiliza log10 para observar mejor la concentración de los montos",
@@ -155,7 +203,12 @@ grafico_2 <- multas_limpias %>%
     y = "Cantidad de registros",
     caption = "Fuente: Plataforma Nacional de Datos Abiertos - Municipalidad Distrital de Ate"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", color = "#1F2937"),
+    plot.subtitle = element_text(color = "#4B5563"),
+    panel.grid.minor = element_blank()
+  )
 
 # Guardado de gráficos individuales
 ggsave(
@@ -188,6 +241,8 @@ ggsave(
   dpi = 300
 )
 
+# Mostrar los gráficos en la pestaña Plots de RStudio
 print(grafico_1)
 print(grafico_2)
 print(collage)
+
