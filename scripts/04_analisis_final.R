@@ -4,6 +4,15 @@
 
 rm(list = ls())
 
+# Se establece automáticamente la carpeta principal del proyecto.
+if (rstudioapi::isAvailable()) {
+  ruta_script <- rstudioapi::getActiveDocumentContext()$path
+  if (nzchar(ruta_script)) {
+    setwd(dirname(dirname(ruta_script)))
+  }
+}
+
+
 library(dplyr)
 library(ggplot2)
 library(patchwork)
@@ -47,11 +56,12 @@ participacion_top10
 # 3. Gráfico comparativo -------------------------------------------------
 grafico_cantidad <- top_cantidad %>%
   ggplot(aes(x = reorder(giro, cantidad_multas), y = cantidad_multas)) +
-  geom_col() +
+  geom_col(fill = "#5E35B1", alpha = 0.90) +
   geom_text(
     aes(label = comma(cantidad_multas)),
     hjust = -0.1,
-    size = 3
+    size = 3,
+    color = "#4527A0"
   ) +
   coord_flip() +
   expand_limits(y = max(top_cantidad$cantidad_multas) * 1.15) +
@@ -60,16 +70,21 @@ grafico_cantidad <- top_cantidad %>%
     x = "",
     y = "Cantidad de multas"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", color = "#1F2937"),
+    panel.grid.minor = element_blank()
+  )
 
 grafico_monto <- top_monto %>%
   mutate(monto_millones = monto_total / 1000000) %>%
   ggplot(aes(x = reorder(giro, monto_millones), y = monto_millones)) +
-  geom_col() +
+  geom_col(fill = "#00897B", alpha = 0.90) +
   geom_text(
     aes(label = paste0("S/ ", round(monto_millones, 1), " M")),
     hjust = -0.1,
-    size = 3
+    size = 3,
+    color = "#00695C"
   ) +
   coord_flip() +
   expand_limits(y = max(top_monto$monto_total / 1000000) * 1.20) +
@@ -78,7 +93,11 @@ grafico_monto <- top_monto %>%
     x = "",
     y = "Monto acumulado (millones de S/)"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", color = "#1F2937"),
+    panel.grid.minor = element_blank()
+  )
 
 grafico_final <- grafico_cantidad / grafico_monto +
   plot_annotation(
@@ -95,6 +114,7 @@ ggsave(
   dpi = 300
 )
 
+# Mostrar el gráfico final en la pestaña Plots de RStudio
 print(grafico_final)
 
 # 4. Resultados para las conclusiones -----------------------------------
@@ -121,3 +141,4 @@ cat(
   round(participacion_top10$participacion, 2),
   "% del monto total de la base.\n"
 )
+
