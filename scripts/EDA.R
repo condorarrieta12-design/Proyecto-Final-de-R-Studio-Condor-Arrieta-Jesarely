@@ -187,3 +187,7 @@ ggsave(
   height = 12,
   dpi = 300
 )
+
+print(grafico_1)
+print(grafico_2)
+print(collage)
