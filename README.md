@@ -97,28 +97,4 @@ Los resultados muestran que algunos giros con una cantidad menor de multas prese
 
 Por esta razón, para analizar las multas administrativas no es suficiente observar solamente la frecuencia. También es necesario revisar el monto total, el promedio y la mediana de cada grupo.
 
-## 9. Cómo ejecutar el proyecto
 
-1. Abrir RStudio y crear un proyecto dentro de esta carpeta.
-2. Instalar los paquetes necesarios una sola vez:
-
-```r
-install.packages(c(
-  "readr", "dplyr", "tidyr", "lubridate",
-  "ggplot2", "patchwork", "scales"
-))
-```
-
-3. Ejecutar primero `scripts/EDA.R`.
-4. Ejecutar después `scripts/04_analisis_final.R`.
-5. Subir la carpeta completa al repositorio de GitHub.
-
-## 10. Texto para LinkedIn o X
-
-Realicé un análisis exploratorio en R de **53,504 multas administrativas activas de la Municipalidad Distrital de Ate**, utilizando una base oficial de la Plataforma Nacional de Datos Abiertos.
-
-El principal hallazgo fue que los giros con más multas no son necesariamente los que concentran el mayor monto. Por ejemplo, **TRANSPORTE** tiene la mayor cantidad de registros, mientras que **OF. ADMINISTRATIVA** presenta el mayor monto acumulado.
-
-Además, los diez giros con mayor monto concentran el **68.11%** del total registrado. Esto muestra la importancia de analizar conjuntamente la frecuencia y el valor económico de las multas.
-
-#RStudio #DatosAbiertos #AnalisisDeDatos #Economia
