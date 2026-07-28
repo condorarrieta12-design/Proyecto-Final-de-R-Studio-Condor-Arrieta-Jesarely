@@ -95,6 +95,8 @@ ggsave(
   dpi = 300
 )
 
+print(grafico_final)
+
 # 4. Resultados para las conclusiones -----------------------------------
 giro_mas_multas <- top_cantidad %>%
   arrange(desc(cantidad_multas)) %>%
